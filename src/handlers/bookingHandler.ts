@@ -161,12 +161,13 @@ export class BookingHandler {
     const message = `📝 <b>Запись на программу</b>\n\n` +
       `<b>${program.title}</b>\n` +
       `💰 <b>Стоимость:</b> ${formatCurrency(displayPrice)}\n\n` +
-      `Для продолжения укажите ваш телефон:`;
+      `Для продолжения укажите ваш номер телефона:\n\n` +
+      `⚠️ <i>Нажимая «Отправить номер», вы соглашаетесь на обработку персональных данных для записи на занятия.</i>\n\n`;
 
     await this.bot.sendMessage(chatId, message, {
       parse_mode: 'HTML',
       reply_markup: {
-        keyboard: [[{ text: '📱 Отправить телефон', request_contact: true }]],
+        keyboard: [[{ text: '📱 Отправить номер', request_contact: true }]],
         resize_keyboard: true,
         one_time_keyboard: true
       }
