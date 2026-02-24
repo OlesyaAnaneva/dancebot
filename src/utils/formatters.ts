@@ -61,73 +61,6 @@ export function formatDateTime(dateString: string): string {
   return date.toLocaleString('ru-RU');
 }
 
-// export function formatProgram(program: any): string {
-//   const freeSpots = program.max_participants - program.current_participants;
-//   const spotsText = freeSpots > 0
-//     ? `(${freeSpots} свободно)`
-//     : `(мест нет)`;
-
-//   const typeNames: Record<string, string> = {
-//     'group': '👥 Групповые занятия',
-//     'intensive': '🔥 Интенсив',
-//     'open_group': '🎪 Открытая группа',
-//     'individual': '👤 Индивидуальные занятия'
-//   };
-
-
-//   let message = `<b>${escapeHtml(program.title)}</b>\n`;
-//   message += `<i>${typeNames[program.type] || program.type}</i>\n\n`;
-//   message += `${escapeHtml(program.description || '')}\n\n`;
-//   message += `<b>👥 Места:</b> ${program.current_participants}/${program.max_participants} ${spotsText}\n`;
-
-//   if (program.type === 'open_group' && program.single_price) {
-//     message += `<b>💰 Стоимость:</b>\n`;
-//     message += `• 4 занятия: ${formatCurrency(program.price)}\n`;
-//     message += `• Разовое: ${formatCurrency(program.single_price)}\n\n`;
-//   } else {
-//     message += `<b>💰 Стоимость:</b> ${formatCurrency(program.price)}\n\n`;
-//   }
-
-//   if (program.start_date) {
-//     message += `<b>📅 Старт:</b> ${formatDate(program.start_date)}`;
-//     if (program.end_date) message += ` - ${formatDate(program.end_date)}`;
-//     message += '\n';
-//   }
-
-//   if (program.schedule) {
-//     const duration = program.duration_minutes || 90;
-
-//     // "Вт 20:30, Пт 20:00"
-//     const parts = program.schedule.split(",");
-
-//     const formatted = parts.map((entry: string) => {
-//       const trimmed = entry.trim();
-
-//       // разделяем: день и время
-//       const [day, time] = trimmed.split(" ");
-
-//       if (!time) return trimmed;
-
-
-//       if (time.includes("–")) {
-//         return `${day} ${time}`;
-//       }
-
-//       const timeRange = addDuration(time, duration);
-
-//       return `${day} ${timeRange}`;
-//     });
-
-//     message += `<b>⏰ Расписание:</b> ${escapeHtml(formatted.join(", "))}\n`;
-//   }
-
-
-//   message += `<b>👥 Места:</b> ${program.current_participants}/${program.max_participants} `;
-//   message += `(${freeSpots} свободно)`;
-
-//   return message;
-// }
-
 export function formatProgram(program: any): string {
   const freeSpots = program.max_participants - program.current_participants;
   const spotsText = freeSpots > 0 ? `${freeSpots} свободно` : 'мест нет';
@@ -170,7 +103,7 @@ export function formatProgram(program: any): string {
       if (program.schedule.includes('—')) {
         // Если есть тире, значит там уже есть время
         const lines = program.schedule.split('\n');
-        lines.forEach(line => {
+        lines.forEach((line: string) => {
           if (line.includes('—')) {
             // Убираем HTML теги для чистоты
             const cleanLine = line.replace(/<[^>]*>/g, '');

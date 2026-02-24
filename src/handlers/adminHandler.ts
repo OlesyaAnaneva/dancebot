@@ -126,8 +126,9 @@ export class AdminHandler {
       const groupedByType: Record<string, any[]> = {};
 
       bookings.forEach((booking) => {
-        const program = booking.programs; // ✅ объект, НЕ массив
-        const type = program?.type;
+        const type = booking.programs?.type;
+
+        if (!type) return;
 
         if (!groupedByType[type]) {
           groupedByType[type] = [];
@@ -617,58 +618,6 @@ export class AdminHandler {
         nextSession = data;
       }
 
-      // // ==========================================
-      // // 6) Уведомляем ученика
-      // // ==========================================
-      // const userTelegramId = updatedApp.users?.telegram_id;
-      // let message = `🎉 <b>Запись подтверждена!</b>\n\n` +
-
-      //   `💃 <b>${updatedApp.programs.title}</b>\n` +
-      //   `✅ Оплата получена, место закреплено за вами.\n\n` +
-
-      //   `📅 <b>Ближайшее занятие:</b> ${nextSession
-      //     ? formatDate(nextSession.session_date)
-      //     : "уточняется"
-      //   }\n` +
-
-      //   `⏰ <b>Время:</b> ${nextSession?.session_time || "уточняется"
-      //   }\n\n` +
-
-      //   `📍 <b>Адрес студии:</b>\n` +
-      //   `${config.studio.address}\n\n` +
-
-      //   `👗 <b>Что взять с собой:</b>\n` +
-      //   `• удобную одежду\n` +
-      //   `• танцевальные туфли на каблуке\n` +
-      //   `• воду\n\n` +
-
-      //   `💛 Если планы изменятся — напишите Ане заранее.\n\n` +
-      //   `До встречи на тренировке ✨`;
-      
-      // if (updatedApp.programs.group_link) {
-      //   message += `🔗 <b>Ссылка на чат группы:</b>\n${updatedApp.programs.group_link}\n\n`;
-      // }
-      
-      // if (program?.group_link) {
-      //   message += `\n🔗 <b>Ссылка на чат группы:</b>\n${program.group_link}\n\n`;
-      // }
-      // if (userTelegramId) {
-      //   await this.bot.sendMessage(
-      //     userTelegramId,
-      //    message,
-      //     {
-      //       parse_mode: "HTML",
-      //       reply_markup: {
-      //         inline_keyboard: [
-      //           [{ text: "📅 Мои занятия", callback_data: "nav_my_bookings" }],
-      //           [{ text: "💬 Написать Ане", url: "https://t.me/anv_karelina" }],
-      //           [{ text: "🏠 В меню", callback_data: "nav_start" }],
-      //         ],
-      //       },
-      //     }
-      //   );
-
-      //   console.log(`✅ User notified: ${userTelegramId}`);
 
       // ==========================================
       // 6) Уведомляем ученика
@@ -692,7 +641,7 @@ export class AdminHandler {
       }
 
       let message = `🎉 <b>Запись подтверждена!</b>\n\n` +
-        `💃 <b>${updatedApp.programs.title}</b>\n` +
+        `💃 <b>${updatedApp.programs?.title || 'Занятие'}</b>\n` +
         `✅ Оплата получена, место закреплено за вами.\n\n` +
         scheduleText + `\n\n` +
         `📍 <b>Адрес студии:</b>\n` +
@@ -891,7 +840,7 @@ export class AdminHandler {
             if (p.schedule.includes('—')) {
               // Если это уже отформатированное расписание с тире
               const lines = p.schedule.split('\n');
-              lines.forEach(line => {
+              lines.forEach((line: string) => {
                 if (line.includes('—')) {
                   // Убираем HTML теги для чистоты
                   const cleanLine = line.replace(/<[^>]*>/g, '');
@@ -1046,11 +995,11 @@ export class AdminHandler {
 
         // Парсим расписание интенсива
         if (program.schedule && program.schedule.includes('Расписание интенсива:')) {
-          const scheduleLines = program.schedule.split('\n').filter(line =>
+          const scheduleLines = program.schedule.split('\n').filter((line: string | string[]) =>
             line.includes('—') && line.includes('<b>')
           );
 
-          scheduleLines.forEach((line, index) => {
+          scheduleLines.forEach((line: string, index: number) => {
             const cleanLine = line.replace(/<[^>]*>/g, '');
             const parts = cleanLine.split('—');
             if (parts.length >= 2) {
@@ -1080,9 +1029,9 @@ export class AdminHandler {
       // Обрабатываем регулярные занятия (группы и открытые группы)
       if (['group', 'open_group'].includes(program.type) && program.schedule) {
         // Парсим расписание вида "Вт 19:30–21:00, Чт 19:00–20:30"
-        const scheduleParts = program.schedule.split(',').map(s => s.trim());
+        const scheduleParts = program.schedule.split(',').map((s: string) => s.trim());
 
-        scheduleParts.forEach(part => {
+        scheduleParts.forEach((part: string) => {
           // Пример: "Вт 19:30–21:00"
           const match = part.match(/(\S+)\s+(\d{1,2}:\d{2})–(\d{1,2}:\d{2})/);
           if (match) {

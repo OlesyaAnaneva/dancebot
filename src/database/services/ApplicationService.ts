@@ -2,7 +2,9 @@ import { supabase } from '../supabase';
 import { Application, ApplicationWithRelations } from '../models/Application';
 
 export class ApplicationService {
-  async create(data: Omit<Application, 'id' | 'created_at' | 'updated_at'>): Promise<Application | null> {
+  async create(
+    data: Omit<Application, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<Application | null> {
     const { data: application } = await supabase
       .from('applications')
       .insert({
@@ -10,7 +12,7 @@ export class ApplicationService {
         status: 'pending',
         session_ids: data.session_ids || null,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .select()
       .single();

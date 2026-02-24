@@ -86,30 +86,6 @@ export function generateProgramsKeyboard(programs: any[]) {
   return keyboard;
 }
 
-// export function generateAdminKeyboard() {
-//   return {
-//     inline_keyboard: [
-//       [{ text: "📥 Заявки", callback_data: "admin_applications" }],
-
-//       [{ text: "📅 Моё расписание", callback_data: "admin_my_schedule" }],
-
-//       [{ text: "💃 Активности", callback_data: "admin_activities" }],
-
-//       [{ text: "📦 Записи", callback_data: "admin_bookings" }],
-
-//       [{ text: "📢 Рассылка", callback_data: "admin_broadcast" }],
-
-//       [
-//         { text: "📊 Статистика", callback_data: "admin_stats" },
-//         { text: "🎉", callback_data: "admin_celebrate" }
-//       ]
-//     ]
-//   };
-// }
-
-
-
-// keyboards.ts
 export function generateAdminKeyboard() {
   return {
     inline_keyboard: [

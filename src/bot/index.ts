@@ -9,7 +9,7 @@ import { BookingHandler } from '../handlers/bookingHandler';
 import { AdminHandler } from '../handlers/adminHandler';
 import { MyBookingsHandler } from '../handlers/myBookingsHandler';
 
-import { NotificationService } from '../utils/notifications';
+import { NotificationService } from '../database/services/NotificationService';
 
 import { UserService } from '../database/services/UserService';
 import { ProgramService } from '../database/services/ProgramService';

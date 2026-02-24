@@ -2,7 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import { ApplicationService } from '../database/services/ApplicationService';
 import { ProgramService } from '../database/services/ProgramService';
 import { UserService } from '../database/services/UserService';
-import { NotificationService } from '../utils/notifications';
+import { NotificationService } from '../database/services/NotificationService';
 import { formatCurrency, formatDate, formatSchedule } from '../utils/formatters';
 import { BookingService } from '../database/services/BookingService';
 

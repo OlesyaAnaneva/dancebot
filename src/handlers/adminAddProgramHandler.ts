@@ -22,7 +22,7 @@ interface ProgramDraft {
   price?: number;         // цена за цикл
   single_price?: number;  // разовое занятие
   max_participants?: number;
-  group_link?: string;
+  group_link?: string | null;
   scheduleDetails?: ScheduleEntry[]; // 👈 добавляем это поле
 
 }

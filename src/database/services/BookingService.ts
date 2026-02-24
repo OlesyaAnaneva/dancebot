@@ -3,6 +3,9 @@ import { Booking, BookingWithRelations } from '../models/Booking';
 import { Application } from '../models/Application';
 
 export class BookingService {
+  private static bookingColumnsCache: Set<string> | null = null;
+
+
   async createFromApplication(application: Application): Promise<Booking | null> {
     // Build initial payload
     const payload: Record<string, any> = {
@@ -339,9 +342,13 @@ export class BookingService {
   }
 
   async attachSelectedSessions(bookingId: number, sessionIds: number[]) {
-    const inserts = sessionIds.map(id => ({
+    if (!sessionIds?.length) return;
+
+    const uniqueIds = Array.from(new Set(sessionIds));
+
+    const inserts = uniqueIds.map(id => ({
       booking_id: bookingId,
-      session_id: id
+      session_id: id,
     }));
 
     const { error } = await supabase

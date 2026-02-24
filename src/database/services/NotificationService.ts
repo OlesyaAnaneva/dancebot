@@ -57,7 +57,7 @@ export class NotificationService {
         .from("program_sessions")
         .select("session_date, session_time")
         .eq("id", application.session_id)
-        .single();
+        .maybeSingle();
 
       if (session) {
         sessionsText =

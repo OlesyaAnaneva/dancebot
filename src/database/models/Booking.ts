@@ -10,6 +10,7 @@ export interface Booking {
   notes?: string;
   created_at: string;
   updated_at: string;
+  session_id?: number | null;
 }
 
 export interface BookingWithRelations extends Booking {

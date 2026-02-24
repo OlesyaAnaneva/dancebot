@@ -66,7 +66,16 @@ export class AdminService {
         .select("users(*)")
         .eq("status", "confirmed");
 
-      return data?.map((b: any) => b.users) || [];
+      const unique = new Map<number, any>();
+
+      (data || []).forEach((b: any) => {
+        const u = b.users;
+        if (u?.telegram_id) {
+          unique.set(u.telegram_id, u);
+        }
+      });
+
+      return Array.from(unique.values());
     }
 
     // 💃 конкретная программа
@@ -110,38 +119,38 @@ export class AdminService {
   //   }
   // }
 
-  private async getUsersByProgramType(type: string): Promise<any[]> {
-    try {
-      // Ищем пользователей через бронирования с учетом типа программы
-      const { data: bookings, error } = await supabase
-        .from('bookings')
-        .select(`
-          user_id,
-          programs!inner(type)
-        `)
-        .eq('status', 'confirmed')
-        .eq('programs.type', type);
+  // private async getUsersByProgramType(type: string): Promise<any[]> {
+  //   try {
+  //     // Ищем пользователей через бронирования с учетом типа программы
+  //     const { data: bookings, error } = await supabase
+  //       .from('bookings')
+  //       .select(`
+  //         user_id,
+  //         programs!inner(type)
+  //       `)
+  //       .eq('status', 'confirmed')
+  //       .eq('programs.type', type);
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      // Получаем ID пользователей
-      const userIds = bookings.map(b => b.user_id).filter(id => id);
-      if (userIds.length === 0) return [];
+  //     // Получаем ID пользователей
+  //     const userIds = bookings.map(b => b.user_id).filter(id => id);
+  //     if (userIds.length === 0) return [];
 
-      // Получаем данные пользователей
-      const { data: users, error: usersError } = await supabase
-        .from('users')
-        .select('telegram_id, username, first_name, last_name')
-        .in('id', [...new Set(userIds)]); // Убираем дубликаты
+  //     // Получаем данные пользователей
+  //     const { data: users, error: usersError } = await supabase
+  //       .from('users')
+  //       .select('telegram_id, username, first_name, last_name')
+  //       .in('id', [...new Set(userIds)]); // Убираем дубликаты
 
-      if (usersError) throw usersError;
+  //     if (usersError) throw usersError;
 
-      return users || [];
-    } catch (error) {
-      console.error(`Error getting users for program type ${type}:`, error);
-      return [];
-    }
-  }
+  //     return users || [];
+  //   } catch (error) {
+  //     console.error(`Error getting users for program type ${type}:`, error);
+  //     return [];
+  //   }
+  // }
 
   async getSegmentStats(): Promise<Record<string, number>> {
     const segments = ['all', 'group', 'individual', 'open_group', 'intensive'];
