@@ -1,13 +1,12 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { config } from '../config';
-import { formatCurrency, escapeHtml } from './formatters';
-import { AdminService } from '../database/services/AdminService';
-import { supabase } from '../database/supabase';
-import { BookingService } from '../database/services/BookingService';
+import { config } from '../../config';
+import { formatCurrency, escapeHtml } from '../../utils/formatters';
+import { AdminService } from '../services/AdminService';
+import { supabase } from '../supabase';
+import { BookingService } from '../services/BookingService';
 
 export class NotificationService {
   private adminService: AdminService;
-  private bookingService: BookingService;
 
   constructor(
     private bot: TelegramBot,
