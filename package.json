@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/bot/index.ts",
-    "start": "node dist/bot/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/bot/index.js"
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.64.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "@supabase/supabase-js": "^2.39.0"
   },
   "devDependencies": {
     "typescript": "^5.3.2",

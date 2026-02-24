@@ -1,9 +1,8 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
 import { createBot } from '../bot';
 
 const bot = createBot();
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   if (req.method === 'POST') {
     try {
       bot.getBot().processUpdate(req.body);
