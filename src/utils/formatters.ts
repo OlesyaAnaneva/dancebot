@@ -146,9 +146,9 @@ export function formatProgram(program: any): string {
   message += `\n👥 <b>Места:</b> ${program.current_participants}/${program.max_participants} (${spotsText})`;
 
   // Ссылка на группу (если есть)
-  if (program.group_link) {
-    message += `\n\n🔗 <b>Чат группы:</b>\n${program.group_link}`;
-  }
+  // if (program.group_link) {
+  //   message += `\n\n🔗 <b>Чат группы:</b>\n${program.group_link}`;
+  // }
 
   return message;
 }
