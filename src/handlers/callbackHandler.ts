@@ -97,7 +97,9 @@ export class CallbackHandler {
       this.adminAddProgramHandler.handleCallback(query.message?.chat.id, data));
     handlers.set(CALLBACK_PREFIXES.DURATION, (data: string, query: { message: { chat: { id: number; }; }; }) =>
       this.adminAddProgramHandler.handleCallback(query.message?.chat.id, data));
-
+    handlers.set(CALLBACK_PREFIXES.ADD_TYPE, (data: string, query: { message: { chat: { id: number; }; }; }) =>
+      this.adminAddProgramHandler.handleCallback(query.message?.chat.id, data));
+    
     // Booking handlers
     handlers.set(CALLBACK_PREFIXES.NOTES_SKIP, (data: any, query: { message: { chat: { id: number; }; }; }) =>
       this.bookingHandler.handleNotes(query.message?.chat.id, 'нет'));
