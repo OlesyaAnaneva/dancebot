@@ -194,11 +194,22 @@ export class AdminHandler {
                 ? `${user.first_name || ""} ${user.last_name || ""}`.trim()
                 : booking.user_name;
 
-            const username =
-              user?.username ? `@${user.username}` : "ник не указан";
+            let contactInfo = "";
+            if (user?.username) {
+              contactInfo = `💬 @${user.username}`;
+            } else if (user?.phone) {
+              const phone = user.phone.replace(/^\+/, '');
+              contactInfo = `📞 ${phone}`;
+            } else {
+              contactInfo = "❓ нет контакта";
+            }
+
             const price = formatCurrency(booking.amount || 0);
 
-            let dateText = ['group', 'intensive'].includes(program?.type) ? `По расписанию: ${program?.schedule || 'уточняется'}` : "Абонемент / полный курс";
+            let dateText = ['group', 'intensive'].includes(program?.type)
+              ? `По расписанию: ${program?.schedule || 'уточняется'}`
+              : "Абонемент / полный курс";
+
             // ============================================
             // 🎫 Разовая открытая группа → дата занятия
             // ============================================
@@ -223,12 +234,10 @@ export class AdminHandler {
             }
             const payStatus =
               booking.payment_status === "paid"
-                ? "✅ оплачено"
-                : "⏳ не оплачено";
+              ? "✅ оплачено"
+              : "⏳ не оплачено";
 
-
-
-            message += `${i + 1}. <b>${fullName}</b> (${username}) [#${booking.id}]\n`;
+            message += `${i + 1}. <b>${fullName}</b> (${contactInfo}) [#${booking.id}]\n`;
             message += `   💰 ${price}\n`;
             message += `   ${payStatus}\n`;
             message += `   📅 ${dateText}\n\n`;
@@ -677,6 +686,42 @@ export class AdminHandler {
         );
         console.log(`✅ User notified: ${userTelegramId}`);
       
+        if (programDb?.group_link || updatedApp.programs?.group_link) {
+          const chatLink = programDb?.group_link || updatedApp.programs?.group_link;
+
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          await this.bot.sendMessage(
+            userTelegramId,
+            `🎉 <b>Последний шаг!</b>\n\n` +
+            `Осталось только вступить в чат группы, чтобы быть на связи с другими участницами и ничего не пропустить ✨\n\n` +
+            `🔗 <b>Чат группы:</b>\n` +
+            `${chatLink}\n\n` +
+            `💡 Если вдруг потеряете ссылку — не проблема! Она всегда будет ` +
+            `доступна в разделе "📅 Мои занятия". Просто найдите свою программу и нажмите "🔗 Чат группы".\n\n` +
+            `💛 Ждём в чатике! 👋`,
+            {
+              parse_mode: "HTML",
+              reply_markup: {
+                inline_keyboard: [
+                  [
+                    {
+                      text: "🔗 Перейти в чат",
+                      url: chatLink
+                    }
+                  ],
+                  [
+                    {
+                      text: "📅 Мои занятия",
+                      callback_data: "nav_my_bookings"
+                    }
+                  ]
+                ]
+              }
+            }
+          );
+          console.log(`✅ Ссылка на чат отправлена пользователю ${userTelegramId}`);
+        }
       }
 
       
