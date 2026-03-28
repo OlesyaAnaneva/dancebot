@@ -1,8 +1,6 @@
 meta:
-  environment: node
-  toolchain:
-    name: node
-    version: 20
+  environment: nodejs
+
 build:
   commands:
     - npm install
