@@ -1,0 +1,13 @@
+meta:
+  environment: node
+  toolchain:
+    name: node
+    version: 18
+
+build:
+  commands:
+    - npm install
+    - npm run build
+
+run:
+  command: npm run start
