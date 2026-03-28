@@ -1,8 +1,0 @@
-meta:
-  environment: node
-
-build:
-  command: npm install && npm run build
-
-run:
-  command: npm run start
