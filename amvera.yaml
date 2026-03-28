@@ -2,9 +2,7 @@ meta:
   environment: nodejs
 
 build:
-  commands:
-    - npm install
-    - npm run build
+  command: npm install && npm run build
 
 run:
   command: npm run start
