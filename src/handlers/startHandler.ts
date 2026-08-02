@@ -409,7 +409,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
         for (let i = 0; i < groupedPrograms.group.length; i++) {
           const program = groupedPrograms.group[i];
           let duration = Number(program.duration_minutes) || 90;
-          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : `${duration} мин`;
+          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : duration === 120 ? "2 часа" : `${duration} мин`;
 
           msg += `${i + 1}. 💃 <b>${escapeHtml(program.title)}</b>\n`;
           msg += `   🕘 Длительность: ${durationText}\n`;
@@ -438,7 +438,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
         for (let i = 0; i < groupedPrograms.intensive.length; i++) {
           const program = groupedPrograms.intensive[i];
           let duration = Number(program.duration_minutes) || 90;
-          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : `${duration} мин`;
+          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : duration === 120 ? "2 часа" : `${duration} мин`;
 
           msg += `${i + 1}. 🔥 <b>${escapeHtml(program.title)}</b>\n`;
           msg += `   📅 ${formatDate(new Date(program.start_date))}`;
@@ -471,7 +471,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
         for (let i = 0; i < groupedPrograms.open_group.length; i++) {
           const program = groupedPrograms.open_group[i];
           let duration = Number(program.duration_minutes) || 90;
-          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : `${duration} мин`;
+          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : duration === 120 ? "2 часа" : `${duration} мин`;
 
           msg += `${i + 1}. 🚪 <b>${escapeHtml(program.title)}</b>\n`;
           msg += `   🕘 Длительность: ${durationText}\n`;
@@ -499,7 +499,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
         for (let i = 0; i < groupedPrograms.individual.length; i++) {
           const program = groupedPrograms.individual[i];
           let duration = Number(program.duration_minutes) || 60;
-          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : `${duration} мин`;
+          let durationText = duration === 60 ? "1 час" : duration === 90 ? "1,5 часа" : duration === 120 ? "2 часа" : `${duration} мин`;
 
           msg += `${i + 1}. 👤 <b>${escapeHtml(program.title)}</b>\n`;
           msg += `   🕘 Длительность: ${durationText}\n`;

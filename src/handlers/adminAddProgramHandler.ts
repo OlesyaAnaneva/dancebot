@@ -747,6 +747,8 @@ export class AdminAddProgramHandler {
         ? "1 час"
         : draft.duration_minutes === 90
           ? "1,5 часа"
+          : draft.duration_minutes === 120
+            ? "2 часа"
           : `${draft.duration_minutes} мин`;
 
     let msg = "";
@@ -799,7 +801,7 @@ export class AdminAddProgramHandler {
         `📌 ${draft.description}\n\n` +
         `📅 Старт: <b>${draft.start_date}</b>\n` +
         `⏰ ${draft.schedule}\n` +
-        // `⏱ Длительность: <b>${durationText}</b>\n\n` +
+        `⏱ Длительность: <b>${durationText}</b>\n\n` +
         `💰 Цена курса: <b>${draft.price} ₽</b>\n`;
 
       if (draft.single_price) {

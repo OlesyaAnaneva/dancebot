@@ -124,6 +124,28 @@ export function formatProgram(program: any): string {
         }
       }
     }
+
+    const duration = Number(program.duration_minutes);
+
+    if (!isNaN(duration) && duration > 0) {
+      let durationText = '';
+
+      switch (duration) {
+        case 60:
+          durationText = '1 час';
+          break;
+        case 90:
+          durationText = '1,5 часа';
+          break;
+        case 120:
+          durationText = '2 часа';
+          break;
+        default:
+          durationText = `${duration} мин`;
+      }
+
+      message += `\n🕘 <b>Длительность:</b> ${durationText}\n`;
+    }
   } else {
     // Для остальных типов показываем дату старта и расписание
     if (program.start_date) {
@@ -137,7 +159,7 @@ export function formatProgram(program: any): string {
   }
 
   // Цены
-  message += `\n💰 <b>Цена:</b> ${formatCurrency(program.price)} ₽`;
+  message += `\n💰 <b>Цена:</b> ${formatCurrency(program.price)}`;
   if (program.single_price) {
     message += `\n💳 <b>Разовое:</b> ${formatCurrency(program.single_price)} ₽`;
   }
