@@ -420,7 +420,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
 
           if (sessions.length > 0) {
             msg += `   📅 <b>Ближайшие:</b>\n`;
-            sessions.slice(0, 3).forEach((s: any) => {
+            sessions.forEach((s: any) => {
               msg += `   • ${formatDate(s.session_date)} — ${escapeHtml(s.session_time)}\n`;
             });
           } else if (program.schedule) {
@@ -481,7 +481,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
           const sessions = await this.programService.getUpcomingSessionsByProgram(program.id);
           if (sessions.length > 0) {
             msg += `   📅 <b>Ближайшие:</b>\n`;
-            sessions.slice(0, 3).forEach((s: any) => {
+            sessions.forEach((s: any) => {
               msg += `   • ${formatDate(s.session_date)} — ${escapeHtml(s.session_time)}\n`;
             });
           } else if (program.schedule) {
