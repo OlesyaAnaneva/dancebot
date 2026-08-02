@@ -132,6 +132,7 @@ export class AdminAddProgramHandler {
           inline_keyboard: [
             [{ text: "1 час", callback_data: "duration_60" }],
             [{ text: "1,5 часа", callback_data: "duration_90" }],
+            [{ text: "2 часа", callback_data: "duration_120" }],
             [{ text: "❌ Отмена", callback_data: "add_cancel" }],
           ],
         },
@@ -327,6 +328,7 @@ export class AdminAddProgramHandler {
           inline_keyboard: [
             [{ text: "1 час (60 мин)", callback_data: "duration_60" }],
             [{ text: "1,5 часа (90 мин)", callback_data: "duration_90" }],
+            [{ text: "2 часа (120 мин)", callback_data: "duration_120" }],
             [{ text: "❌ Отмена", callback_data: "add_cancel" }],
           ],
         },
@@ -868,6 +870,7 @@ export class AdminAddProgramHandler {
         sessions.push({
           date: d.toISOString().split("T")[0],
           time: times[i],
+          duration_minutes: draft.duration_minutes,
         });
       }
 
@@ -997,7 +1000,7 @@ export class AdminAddProgramHandler {
           this.drafts[chatId] = {};
         }
         this.drafts[chatId].type = "intensive";
-        this.drafts[chatId].duration_minutes = 90;
+        // this.drafts[chatId].duration_minutes = 90;
         this.steps[chatId] = "title";
         await this.bot.sendMessage(chatId, "✏️ Напиши название интенсива:", {
           reply_markup: this.cancelKeyboard(),
@@ -1141,9 +1144,15 @@ export class AdminAddProgramHandler {
 
       this.drafts[chatId].duration_minutes = minutes;
 
+      let durationText = `${minutes} мин`;
+
+      if (minutes === 60) durationText = "1 час";
+      if (minutes === 90) durationText = "1,5 часа";
+      if (minutes === 120) durationText = "2 часа";
+
       await this.bot.sendMessage(
         chatId,
-        `✅ Длительность установлена: ${minutes === 60 ? "1 час" : "1,5 часа"}`
+        `✅ Длительность установлена: ${durationText}`
       );
 
       // дальше зависит от типа
@@ -1243,7 +1252,7 @@ export class AdminAddProgramHandler {
           this.drafts[chatId] = {};
         }
         this.drafts[chatId].type = "intensive";
-        this.drafts[chatId].duration_minutes = 90;
+        // this.drafts[chatId].duration_minutes = 90;
         // дальше продолжаем flow
         this.steps[chatId] = "title";
         await this.bot.sendMessage(
