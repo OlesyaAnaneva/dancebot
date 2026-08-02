@@ -453,7 +453,7 @@ ${shoesGuide ? '❓ <b>Нет туфель?</b> Смотри рекоменда�
             const scheduleLines = program.schedule.split('\n').filter((line: string) => line.includes('—'));
             if (scheduleLines.length > 0) {
               msg += `   📅 <b>Расписание:</b>\n`;
-              scheduleLines.slice(0, 3).forEach((line: string) => {
+              scheduleLines.forEach((line: string) => {
                 const cleanLine = line.replace(/<[^>]*>/g, '');
                 msg += `   ${cleanLine}\n`;
               });
