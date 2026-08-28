@@ -47,6 +47,42 @@ export class BookingHandler {
         return;
       }
 
+      // ✅ ПРОВЕРКА 1: программа должна быть активной
+      if (program.status === 'deleted' || program.status === 'inactive') {
+        await this.bot.sendMessage(
+          chatId,
+          '⚠️ Эта программа уже завершена или неактивна.\n\n' +
+          'Пожалуйста, выберите актуальное расписание из главного меню (/start).'
+        );
+        return;
+      }
+
+      // ✅ ПРОВЕРКА 2: пользователь ещё не записан на эту программу
+      const dbUser = await this.userService.getOrCreate(user);
+
+      // 🛡️ ЗАЩИТА ОТ NULL: если пользователя по какой-то причине не удалось получить/создать
+      if (!dbUser) {
+        console.error(`[Booking] Не удалось получить dbUser для telegram_id: ${user.id}`);
+        await this.bot.sendMessage(
+          chatId,
+          '❌ Не удалось обработать ваш профиль. Попробуйте начать с команды /start или напишите Ане.'
+        );
+        return;
+      }
+
+      // Теперь TypeScript знает, что dbUser точно существует, и ошибка исчезнет
+      const alreadyBooked = await this.bookingService.hasActiveBooking(dbUser.id, program.id);
+
+      if (alreadyBooked) {
+        await this.bot.sendMessage(
+          chatId,
+          `💫 Вы уже записаны на программу «${program.title}».\n\n` +
+          `Проверить свои записи можно в разделе "📅 Мои занятия".\n` +
+          `Если нужна другая программа — вернитесь в главное меню (/start).`
+        );
+        return;
+      }
+
       if (program.type === 'individual') {
         await this.handleIndividualBooking(chatId, program, user);
         return;
@@ -61,7 +97,6 @@ export class BookingHandler {
         return;
       }
 
-      // Сохраняем сессию
       this.sessions.set(chatId, {
         chatId,
         programId,
@@ -71,10 +106,6 @@ export class BookingHandler {
         }
       });
 
-      // Сохраняем пользователя
-      const dbUser = await this.userService.getOrCreate(user);
-
-      // Для открытых групп - показываем выбор варианта
       if (program.type === 'open_group' && program.single_price) {
         await this.showOpenGroupOptions(chatId, program, dbUser);
         return;

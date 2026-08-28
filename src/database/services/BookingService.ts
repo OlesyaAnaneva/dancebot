@@ -390,4 +390,22 @@ export class BookingService {
     return (singleCount || 0) + (fullCount || 0);
   }
 
+  // Проверка, есть ли у пользователя уже активная запись на эту программу
+  async hasActiveBooking(userId: number, programId: number): Promise<boolean> {
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('program_id', programId)
+      .in('status', ['confirmed', 'paid']) // Проверяем только активные статусы
+      .limit(1);
+
+    if (error) {
+      console.error('hasActiveBooking error:', error);
+      return false; // В случае ошибки БД не блокируем запись, чтобы не ломать UX
+    }
+
+    return !!data && data.length > 0;
+  }
+
 }

@@ -10,7 +10,7 @@ export interface Program {
   current_participants: number;
   price: number;
   single_price?: number | null;
-  status: 'active' | 'inactive';
+  status: 'active' | 'inactive' | 'deleted';
   created_at: string;
   updated_at: string;
   duration_minutes: string;
